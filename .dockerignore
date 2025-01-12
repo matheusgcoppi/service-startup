@@ -1,0 +1,11 @@
+.circleci/
+.git/
+.reading/
+.dockerignore
+.gitignore
+api/programs/frontends/
+zarf/docker/
+zarf/k8s/
+makefile
+README.md
+!zarf/compose/database-data

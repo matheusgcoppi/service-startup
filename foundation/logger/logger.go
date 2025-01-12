@@ -130,7 +130,7 @@ func new(w io.Writer, minLevel Level, serviceName string, traceIDFn TraceIDFn, e
 
 	// Attributes to add to every log.
 	attrs := []slog.Attr{
-		{Key: "service", Value: slog.StringValue(serviceName)},
+		{Key: "services", Value: slog.StringValue(serviceName)},
 	}
 
 	// Add those attributes and capture the final handler.

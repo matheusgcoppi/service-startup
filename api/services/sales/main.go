@@ -9,6 +9,8 @@ import (
 	"syscall"
 )
 
+var build = "develop"
+
 func main() {
 	var log *logger.Logger
 
@@ -38,7 +40,7 @@ func run(ctx context.Context, log *logger.Logger) error {
 	// ----------------------------------------------------------------------
 	// GOMAXPROCS
 
-	log.Info(ctx, "startup", "GOMAXPROCS", runtime.GOMAXPROCS(0))
+	log.Info(ctx, "startup", "GOMAXPROCS", runtime.GOMAXPROCS(0), "build", build)
 
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)

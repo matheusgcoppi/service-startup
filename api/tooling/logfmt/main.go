@@ -16,7 +16,7 @@ import (
 var service string
 
 func init() {
-	flag.StringVar(&service, "service", "", "filter which service to see")
+	flag.StringVar(&service, "services", "", "filter which services to see")
 
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGINT)
@@ -42,8 +42,8 @@ func main() {
 			continue
 		}
 
-		// If a service filter was provided, check.
-		if service != "" && strings.ToLower(m["service"].(string)) != service {
+		// If a services filter was provided, check.
+		if service != "" && strings.ToLower(m["services"].(string)) != service {
 			continue
 		}
 
@@ -53,13 +53,13 @@ func main() {
 			traceID = fmt.Sprintf("%v", v)
 		}
 
-		// {"time":"2023-06-01T17:21:11.13704718Z","level":"INFO","msg":"startup","service":"SALES-API","GOMAXPROCS":1}
+		// {"time":"2023-06-01T17:21:11.13704718Z","level":"INFO","msg":"startup","services":"SALES-API","GOMAXPROCS":1}
 
 		// Build out the know portions of the log in the order
 		// I want them in.
 		b.Reset()
 		b.WriteString(fmt.Sprintf("%s: %s: %s: %s: %s: %s: ",
-			m["service"],
+			m["services"],
 			m["time"],
 			m["file"],
 			m["level"],
@@ -71,7 +71,7 @@ func main() {
 		// added for the log.
 		for k, v := range m {
 			switch k {
-			case "service", "time", "file", "level", "trace_id", "msg":
+			case "services", "time", "file", "level", "trace_id", "msg":
 				continue
 			}
 
