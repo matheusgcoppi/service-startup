@@ -33,11 +33,10 @@ func main() {
 		log.Error(ctx, "startup", "msg", err)
 		os.Exit(1)
 	}
-
 }
 
 func run(ctx context.Context, log *logger.Logger) error {
-	// ----------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------
 	// GOMAXPROCS
 
 	log.Info(ctx, "startup", "GOMAXPROCS", runtime.GOMAXPROCS(0), "build", build)
