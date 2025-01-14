@@ -65,6 +65,15 @@ dev-status:
 	watch -n 2 kubectl get pods -o wide --all-namespaces
 
 # ======================================================================================================================
+
+dev-load:
+	kind load docker-image $(SALES_IMAGE) --name $(KIND_CLUSTER)
+
+dev-apply:
+	kustomize build zarf/k8s/dev/sales | kubectl apply -f -
+	kubectl wait pods --namespace=$(ANMESPACE) --selector app=$(SALES_APP) --timeout=120s --for=condition=Ready
+
+# ======================================================================================================================
 # Modules support
 tidy:
 	go mod tidy
