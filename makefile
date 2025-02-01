@@ -35,13 +35,11 @@ build: sales
 
 sales:
 	docker build \
-		-f zarf/docker/Dockerfile.sales.dockerfile \
+		-f zarf/docker/dockerfile.sales.dockerfile \
 		-t ${SALES_IMAGE} \
 		--build-arg BUILD_REF=$(VERSION) \
 		--build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 		.
-
-
 
 # ======================================================================================================================
 # Running from within k8s/kind
