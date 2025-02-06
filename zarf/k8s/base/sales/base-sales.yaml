@@ -1,3 +1,4 @@
+# Core resources: Namespace, Deployment, and Service
 apiVersion: v1
 kind: Namespace
 metadata:

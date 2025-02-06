@@ -16,7 +16,7 @@ import (
 var service string
 
 func init() {
-	flag.StringVar(&service, "services", "", "filter which services to see")
+	flag.StringVar(&service, "service", "", "filter which services to see")
 
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGINT)
