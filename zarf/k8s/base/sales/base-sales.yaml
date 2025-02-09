@@ -28,6 +28,12 @@ spec:
         - name: sales
           image: sales-image
 
+          env:
+            - name: GOMAXPROCS # Dynamically sets the number of CPU cores based on the container's CPU limit
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.cpu
+
 ---
 
 apiVersion: v1
