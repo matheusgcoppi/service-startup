@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"errors"
+	"expvar"
 	"fmt"
 	"github.com/ardanlabs/conf/v3"
+	"github.com/matheusgcoppi/service/api/services/api/debug"
 	"github.com/matheusgcoppi/service/foundation/logger"
+	"net/http"
 	"os"
 	"os/signal"
 	"runtime"
@@ -88,6 +91,19 @@ func run(ctx context.Context, log *logger.Logger) error {
 	}
 
 	log.Info(ctx, "startup", "config", out)
+
+	expvar.NewString("build").Set(cfg.Version.Build)
+
+	// -----------------------------------------------------------------------------------------------------------------
+	// Start Debug Service
+
+	go func() {
+		log.Info(ctx, "startup", "status", "debug v1 router started", "host", cfg.Web.DebugHost)
+
+		if err := http.ListenAndServe(cfg.Web.DebugHost, debug.Mux()); err != nil {
+			log.Error(ctx, "shutdown", "status", "debug v1 router closed", "host", cfg.Web.DebugHost, "msg", err)
+		}
+	}()
 
 	// -----------------------------------------------------------------------------------------------------------------
 

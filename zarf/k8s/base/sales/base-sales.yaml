@@ -28,6 +28,12 @@ spec:
         - name: sales
           image: sales-image
 
+          ports:
+            - name: sales
+              containerPort: 3000
+            - name: sales-debug
+              containerPort: 3030
+
           env:
             - name: GOMAXPROCS # Dynamically sets the number of CPU cores based on the container's CPU limit
               valueFrom:
