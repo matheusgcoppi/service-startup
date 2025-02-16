@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/ardanlabs/conf/v3"
 	"github.com/matheusgcoppi/service/api/services/api/debug"
+	"github.com/matheusgcoppi/service/api/services/mux"
 	"github.com/matheusgcoppi/service/foundation/logger"
 	"net/http"
 	"os"
@@ -114,7 +115,7 @@ func run(ctx context.Context, log *logger.Logger) error {
 
 	api := http.Server{
 		Addr:         cfg.Web.APIHost,
-		Handler:      nil,
+		Handler:      mux.WebApi(),
 		ReadTimeout:  cfg.Web.ReadTimeout,
 		WriteTimeout: cfg.Web.WriteTimeout,
 		IdleTimeout:  cfg.Web.IdleTimeout,
