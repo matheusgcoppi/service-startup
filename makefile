@@ -11,6 +11,15 @@ help:
 version:
 	go run api/services/sales/main.go --version
 
+curl-test:
+	curl -il -X GET http://localhost:3000/test
+
+curl-live:
+	curl -il -X GET http://localhost:3000/liveness
+
+curl-ready:
+	curl -il -X GET http://localhost:3000/readiness
+
 # ======================================================================================================================
 # Define dependencies
 
@@ -75,7 +84,7 @@ dev-load:
 
 dev-apply:
 	kustomize build zarf/k8s/dev/sales | kubectl apply -f -
-	kubectl wait pods --namespace=$(ANMESPACE) --selector app=$(SALES_APP) --timeout=120s --for=condition=Ready
+	kubectl wait pods --namespace=$(NAMESPACE) --selector app=$(SALES_APP) --timeout=120s --for=condition=Ready
 
 dev-restart:
 	kubectl rollout restart deployment $(SALES_APP) --namespace=$(NAMESPACE)
