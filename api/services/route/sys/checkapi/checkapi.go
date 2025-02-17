@@ -1,11 +1,12 @@
 package checkapi
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 )
 
-func liveness(w http.ResponseWriter, r *http.Request) {
+func liveness(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	status := struct {
 		Status string
 	}{
@@ -15,7 +16,7 @@ func liveness(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(status)
 }
 
-func readiness(w http.ResponseWriter, r *http.Request) {
+func readiness(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 	status := struct {
 		Status string
 	}{
