@@ -13,7 +13,7 @@ func liveness(ctx context.Context, w http.ResponseWriter, r *http.Request) error
 		Status: "OK",
 	}
 
-	json.NewEncoder(w).Encode(status)
+	return json.NewEncoder(w).Encode(status)
 }
 
 func readiness(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -23,5 +23,5 @@ func readiness(ctx context.Context, w http.ResponseWriter, r *http.Request) erro
 		Status: "OK",
 	}
 
-	json.NewEncoder(w).Encode(status)
+	return json.NewEncoder(w).Encode(status)
 }
