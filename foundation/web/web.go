@@ -17,6 +17,7 @@ type Handler func(ctx context.Context, w http.ResponseWriter, r *http.Request) e
 type App struct {
 	*http.ServeMux
 	shutdown chan os.Signal
+	mw       []MidHandlers
 }
 
 // NewApp creates an App value that handle a set of routes for the application.
