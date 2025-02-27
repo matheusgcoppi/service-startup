@@ -30,7 +30,7 @@ func NewApp(shutdown chan os.Signal, mw ...MidHandler) *App {
 }
 
 // HandleFunc Handle sets a handler function for a given HTTP method and a path pair
-// to the applciation server mux.
+// to the application server mux.
 func (app *App) HandleFunc(pattern string, handler Handler, mw ...MidHandler) {
 	handler = wrapMiddleware(mw, handler)
 	handler = wrapMiddleware(app.mw, handler)
