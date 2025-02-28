@@ -1,5 +1,10 @@
 package web
 
+import (
+	"fmt"
+	"log"
+)
+
 // MidHandler is a handler function designed to run code before and/or after
 // another Handler. It is designed to remove boilerplate or other concerns not
 // direct to any given app Handler.
@@ -16,6 +21,8 @@ func wrapMiddleware(mv []MidHandler, handler Handler) Handler {
 		mwFunc := mv[i]
 		if mwFunc != nil {
 			handler = mwFunc(handler)
+			fmt.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+			log.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 		}
 	}
 
