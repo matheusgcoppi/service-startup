@@ -2,25 +2,26 @@ package mid
 
 import (
 	"context"
+	"fmt"
 	"github.com/matheusgcoppi/service/foundation/logger"
 	"github.com/matheusgcoppi/service/foundation/web"
-	"net/http"
+	"time"
 )
 
-func Logger(logger *logger.Logger) web.MidHandler {
-	m := func(handler web.Handler) web.Handler {
-		h := func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
+// Logger writes information about the request to the logs.
+func Logger(ctx context.Context, logger *logger.Logger, path string, rawQuery string, method string, remoteAddr string, handler Handler) error {
+	v := web.GetValues(ctx)
 
-			logger.Info(ctx, "request started", "method", r.Method, r.URL.Path, "remoteaddr", r.RemoteAddr)
-
-			err := handler(ctx, w, r)
-
-			logger.Info(ctx, "request completed", "method", r.Method, r.URL.Path, "remoteaddr", r.RemoteAddr)
-
-			return err
-		}
-
-		return h
+	if rawQuery != "" {
+		path = fmt.Sprintf("%s?%s", path, rawQuery)
 	}
-	return m
+
+	logger.Info(ctx, "request started", "method", method, "path", path, "remoteaddr", remoteAddr)
+
+	err := handler(ctx)
+
+	logger.Info(ctx, "request completed", "method", method, "path", path, "remoteaddr", remoteAddr,
+		"statuscode", v.StatusCode, "since", time.Since(v.Now).String())
+
+	return err
 }

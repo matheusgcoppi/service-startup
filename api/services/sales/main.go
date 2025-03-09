@@ -7,8 +7,9 @@ import (
 	"fmt"
 	"github.com/ardanlabs/conf/v3"
 	"github.com/matheusgcoppi/service/api/services/api/debug"
-	"github.com/matheusgcoppi/service/api/services/mux"
+	"github.com/matheusgcoppi/service/api/services/sales/mux"
 	"github.com/matheusgcoppi/service/foundation/logger"
+	"github.com/matheusgcoppi/service/foundation/web"
 	"net/http"
 	"os"
 	"os/signal"
@@ -29,7 +30,7 @@ func main() {
 	}
 
 	traceIDFn := func(ctx context.Context) string {
-		return "" //web.GetTraceID(ctx)
+		return web.GetTraceID(ctx)
 	}
 
 	log = logger.NewWithEvents(os.Stdout, logger.LevelInfo, "SALES", traceIDFn, events)

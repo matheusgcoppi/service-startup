@@ -4,8 +4,10 @@ package web
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"net/http"
 	"os"
+	"time"
 )
 
 // A Handler is a type that handles a http request within our own little framework
@@ -30,13 +32,19 @@ func NewApp(shutdown chan os.Signal, mw ...MidHandler) *App {
 }
 
 // HandleFunc Handle sets a handler function for a given HTTP method and a path pair
-// to the application server mux.
+// to the application server mid.
 func (app *App) HandleFunc(pattern string, handler Handler, mw ...MidHandler) {
 	handler = wrapMiddleware(mw, handler)
 	handler = wrapMiddleware(app.mw, handler)
 
 	h := func(w http.ResponseWriter, r *http.Request) {
-		if err := handler(r.Context(), w, r); err != nil {
+		v := Values{
+			TraceId: uuid.NewString(),
+			Now:     time.Now().UTC(),
+		}
+		ctx := setValues(r.Context(), &v)
+
+		if err := handler(ctx, w, r); err != nil {
 			// ERROR HANDLING HERE
 			fmt.Println(err)
 			return
