@@ -3,10 +3,12 @@ package web
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/google/uuid"
 	"net/http"
 	"os"
+	"syscall"
 	"time"
 )
 
@@ -31,6 +33,12 @@ func NewApp(shutdown chan os.Signal, mw ...MidHandler) *App {
 	}
 }
 
+// SignalShutdown is used to gracefully shut down the app when an integrity
+// issue is identified
+func (app *App) SignalShutdown() {
+	app.shutdown <- syscall.SIGTERM
+}
+
 // HandleFunc Handle sets a handler function for a given HTTP method and a path pair
 // to the application server mid.
 func (app *App) HandleFunc(pattern string, handler Handler, mw ...MidHandler) {
@@ -46,10 +54,33 @@ func (app *App) HandleFunc(pattern string, handler Handler, mw ...MidHandler) {
 
 		if err := handler(ctx, w, r); err != nil {
 			// ERROR HANDLING HERE
+			if validateError(err) {
+				app.SignalShutdown()
+				return
+			}
 			fmt.Println(err)
 			return
 		}
 	}
 
 	app.ServeMux.HandleFunc(pattern, h)
+}
+
+// validateError validates the error for special conditions that do not
+// warrant an actual shutdown by the system.
+func validateError(err error) bool {
+	// Ignore syscall.EPIPE and syscall.ECONNRESET errors which occurs
+	// when a write operation happens on the http.responseWriter that
+	// has a simultaneously been disconnected by the client (TCP connections
+	// are broken).For instance, when a large amount of data is being written or streamed to the client.
+
+	switch {
+	case errors.Is(err, syscall.EPIPE):
+		return false
+
+	case errors.Is(err, syscall.ECONNRESET):
+		return false
+	}
+
+	return true
 }
