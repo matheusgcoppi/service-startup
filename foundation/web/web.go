@@ -39,6 +39,30 @@ func (app *App) SignalShutdown() {
 	app.shutdown <- syscall.SIGTERM
 }
 
+// HandleFuncNoMiddleware Handle sets a handler function for a given HTTP method and a path pair
+// to the application server mux with no middleware.
+func (app *App) HandleFuncNoMiddleware(pattern string, handler Handler, mw ...MidHandler) {
+	h := func(w http.ResponseWriter, r *http.Request) {
+		v := Values{
+			TraceId: uuid.NewString(),
+			Now:     time.Now().UTC(),
+		}
+		ctx := setValues(r.Context(), &v)
+
+		if err := handler(ctx, w, r); err != nil {
+			// ERROR HANDLING HERE
+			if validateError(err) {
+				app.SignalShutdown()
+				return
+			}
+			fmt.Println(err)
+			return
+		}
+	}
+
+	app.ServeMux.HandleFunc(pattern, h)
+}
+
 // HandleFunc Handle sets a handler function for a given HTTP method and a path pair
 // to the application server mid.
 func (app *App) HandleFunc(pattern string, handler Handler, mw ...MidHandler) {
