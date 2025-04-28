@@ -2,7 +2,7 @@ package mid
 
 import (
 	"context"
-	"github.com/matheusgcoppi/service/app/api/metrics"
+	"github.com/matheusgcoppi/service/app/sdk/metrics"
 )
 
 func Metrics(ctx context.Context, handler Handler) error {

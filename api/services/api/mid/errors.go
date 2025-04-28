@@ -3,8 +3,8 @@ package mid
 import (
 	"context"
 	"errors"
-	"github.com/matheusgcoppi/service/app/api/mid"
 	"github.com/matheusgcoppi/service/app/sdk/errs"
+	"github.com/matheusgcoppi/service/app/sdk/mid"
 	"github.com/matheusgcoppi/service/foundation/logger"
 	"github.com/matheusgcoppi/service/foundation/web"
 	"net/http"

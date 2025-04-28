@@ -2,7 +2,7 @@ package mid
 
 import (
 	"context"
-	"github.com/matheusgcoppi/service/app/api/mid"
+	"github.com/matheusgcoppi/service/app/sdk/mid"
 	"github.com/matheusgcoppi/service/foundation/web"
 	"net/http"
 )

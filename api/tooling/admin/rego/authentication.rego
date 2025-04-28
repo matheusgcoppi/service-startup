@@ -1,4 +1,4 @@
-package coppi.rego
+package coppi.auth
 
 import rego.v1
 

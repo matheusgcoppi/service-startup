@@ -126,7 +126,7 @@ func run(ctx context.Context, log *logger.Logger) error {
 	serverErrors := make(chan error, 1)
 
 	go func() {
-		log.Info(ctx, "startup", "status", "api router started", "host", api.Addr)
+		log.Info(ctx, "startup", "status", "domain router started", "host", api.Addr)
 
 		serverErrors <- api.ListenAndServe()
 	}()

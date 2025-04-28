@@ -1,0 +1,11 @@
+registry: "gcr.io/datadoghq"
+datadog:
+  apiKeyExistingSecret: "datadog-secret"
+  site: "datadoghq.com"
+  logs:
+    enabled: true
+    containerCollectAll: true
+  serviceMonitoring:
+    enabled: true
+  networkMonitoring:
+    enabled: true

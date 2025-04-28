@@ -3,7 +3,7 @@ package mid
 import (
 	"context"
 	"fmt"
-	"github.com/matheusgcoppi/service/app/api/metrics"
+	"github.com/matheusgcoppi/service/app/sdk/metrics"
 	"runtime/debug"
 )
 
