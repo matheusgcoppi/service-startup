@@ -1,4 +1,4 @@
-package coppi.rbac
+package coppi.rego
 
 import rego.v1
 
