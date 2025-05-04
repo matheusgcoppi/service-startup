@@ -35,7 +35,9 @@ rule_user_only if {
 default rule_admin_or_subject := false
 
 rule_admin_or_subject if {
-	rule_admin_only
+	claim_roles := {role | some role in input.Roles}
+    input_admin := {role_admin} & claim_roles
+    count(input_admin) > 0
 } else if {
 	claim_roles := {role | some role in input.Roles}
 	input_user := {role_user} & claim_roles
